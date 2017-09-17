@@ -9,8 +9,8 @@ codis-deps:
 	@make --no-print-directory -C vendor/github.com/spinlock/jemalloc-go/
 
 codis-dashboard: codis-deps
-	go build -i -o bin/codis-dashboard ./cmd/dashboard
-	@./bin/codis-dashboard --default-config > config/dashboard.toml
+	go build -i -o bin/codis-dashboard-pika ./cmd/dashboard
+	@./bin/codis-dashboard-pika --default-config > config/dashboard.toml
 
 codis-proxy: codis-deps
 	go build -i -tags "cgo_jemalloc" -o bin/codis-proxy ./cmd/proxy
@@ -20,7 +20,7 @@ codis-admin: codis-deps
 	go build -i -o bin/codis-admin ./cmd/admin
 
 codis-ha: codis-deps
-	go build -i -o bin/codis-ha ./cmd/ha
+	go build -i -o bin/codis-ha-pika ./cmd/ha
 
 codis-fe: codis-deps
 	go build -i -o bin/codis-fe ./cmd/fe

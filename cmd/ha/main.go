@@ -328,8 +328,11 @@ Groups:
 						if stats := hc.Group.Stats[addr]; stats != nil && stats.Stats != nil {
 							n, err := strconv.Atoi(stats.Stats["master_link_down_since_seconds"])
 							if err != nil {
-								log.WarnErrorf(err, "try to get %s master_link_down_since_seconds failed", addr)
-								continue
+								// for pika it's ok
+								log.WarnErrorf(err, "try to get %s master_link_down_since_seconds failed (but OK with pika)", addr)
+								//continue
+								picked = i
+								goto PROMOTE
 							}
 							if n >= 0 && n < mindown {
 								picked, mindown = i, n
@@ -344,6 +347,7 @@ Groups:
 						}
 					}
 				}
+			PROMOTE:
 				switch {
 				case picked == 0 && picked2 == 0:
 					log.Warnf("try to promote group-[%d], but synced = %d & picked = %d & picked2 = %d, giveup", g.Id, synced, picked, picked2)
